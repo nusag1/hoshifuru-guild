@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>ほしふるギルド</title>
+<meta name="description" content="星のかけらで仲間を呼ぶ、ひとり用ソシャゲ風RPG">
+<meta name="theme-color" content="#1f1a3a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ほしふるギルド">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div class="stars" aria-hidden="true"></div>
+
+  <header id="topbar">
+    <div class="rank">Rank <b id="tb-rank">1</b><div class="expbar"><i id="tb-exp"></i></div></div>
+    <div class="res stamina">⚡<b id="tb-stamina">0/0</b><small id="tb-stamina-next"></small></div>
+    <div class="res">🌟<b id="tb-gems">0</b></div>
+    <div class="res">🪙<b id="tb-gold">0</b></div>
+  </header>
+
+  <main id="screens">
+    <!-- ホーム -->
+    <section id="sc-home" class="screen">
+      <div class="home-hero">
+        <div class="bubble" id="home-line"></div>
+        <img id="home-leader" class="px leader" alt="">
+        <div class="home-name" id="home-name"></div>
+      </div>
+      <div class="home-buttons">
+        <button class="tile" id="btn-login"><span>📅</span>ログボ</button>
+        <button class="tile" id="btn-missions"><span>📜</span>ミッション<i class="badge" id="badge-missions" hidden></i></button>
+        <button class="tile" id="btn-story"><span>📖</span>ものがたり</button>
+        <button class="tile" id="btn-settings"><span>⚙️</span>設定</button>
+      </div>
+      <button class="big-cta" id="btn-go-quest">⚔️ クエストへ出発</button>
+    </section>
+
+    <!-- クエスト -->
+    <section id="sc-quest" class="screen" hidden>
+      <h2 class="sc-title">クエスト</h2>
+      <div id="chapter-list"></div>
+    </section>
+
+    <!-- 編成・キャラ -->
+    <section id="sc-party" class="screen" hidden>
+      <h2 class="sc-title">パーティ編成</h2>
+      <div class="party-slots" id="party-slots"></div>
+      <p class="hint">キャラをタップして、詳しく見る・編成する・強化する</p>
+      <div class="sort-row">
+        <button class="chip on" data-sort="rarity">レア度順</button>
+        <button class="chip" data-sort="level">レベル順</button>
+        <button class="chip" data-sort="el">属性順</button>
+      </div>
+      <div class="char-grid" id="char-grid"></div>
+    </section>
+
+    <!-- ガチャ -->
+    <section id="sc-gacha" class="screen" hidden>
+      <h2 class="sc-title">星の召喚</h2>
+      <div class="gacha-banner">
+        <div class="gacha-stars" aria-hidden="true">✦ ✧ ✦</div>
+        <div class="gacha-featured">
+          <img class="px" id="feat-1" alt=""><img class="px" id="feat-2" alt=""><img class="px" id="feat-3" alt="">
+        </div>
+        <p class="gacha-title">ほしふる召喚</p>
+        <p class="gacha-sub">★3 <b>ルミナ・シオン・ガルド</b> 登場中！</p>
+        <p class="pity" id="pity-text"></p>
+      </div>
+      <div class="gacha-buttons">
+        <button class="gbtn" id="btn-pull1"><b>単発</b><span>🌟100</span></button>
+        <button class="gbtn ten" id="btn-pull10"><b>10連</b><span>🌟1000</span><small id="ten-note">★2以上1体保証</small></button>
+      </div>
+      <button class="link" id="btn-rates">提供割合を見る</button>
+    </section>
+  </main>
+
+  <nav id="nav">
+    <button data-tab="home" class="on"><span>🏠</span>ホーム</button>
+    <button data-tab="quest"><span>⚔️</span>クエスト</button>
+    <button data-tab="party"><span>👥</span>編成</button>
+    <button data-tab="gacha"><span>🌟</span>ガチャ</button>
+  </nav>
+
+  <!-- バトル画面 -->
+  <section id="battle" hidden>
+    <div class="b-top">
+      <div class="b-info"><b id="b-stage"></b><span id="b-wave"></span></div>
+      <div class="b-ctrl">
+        <button id="b-auto">AUTO</button>
+        <button id="b-speed">×1</button>
+        <button id="b-retire">✕</button>
+      </div>
+    </div>
+    <div class="b-field">
+      <div class="b-enemies" id="b-enemies"></div>
+      <div class="b-log" id="b-log"></div>
+      <div class="b-allies" id="b-allies"></div>
+    </div>
+    <div class="b-commands" id="b-commands">
+      <button id="cmd-attack">⚔️<b>こうげき</b></button>
+      <button id="cmd-skill">✨<b id="cmd-skill-name">スキル</b><small id="cmd-skill-cd"></small></button>
+      <button id="cmd-guard">🛡️<b>ぼうぎょ</b></button>
+    </div>
+  </section>
+
+  <!-- 汎用モーダル -->
+  <div id="modal" class="overlay" hidden>
+    <div class="card" id="modal-card"></div>
+  </div>
+  <div id="toast" hidden></div>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
